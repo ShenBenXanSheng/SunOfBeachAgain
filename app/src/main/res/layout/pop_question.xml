@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#efefef"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/pop_lastest_question"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="最新问答"
+            android:textColor="@color/black"
+            android:layout_marginBottom="1dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/pop_no_answer_question"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="待解决问题"
+            android:textColor="@color/black"
+            android:layout_marginBottom="1dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/pop_hot_question"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="最热问题"
+            android:layout_marginBottom="1dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/pop_question_leaderboard"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="本周问答排行榜"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </LinearLayout>
+</layout>

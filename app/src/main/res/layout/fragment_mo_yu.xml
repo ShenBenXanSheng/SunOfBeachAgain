@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.MoYuFragment"
+        android:clipChildren="false" >
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/moyu_tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/mainColor"
+            app:tabIndicatorColor="@color/white"
+            app:tabGravity="start"
+            app:tabRippleColor="@color/white" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/moyu_vp2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/moyu_tabLayout"
+            android:clipChildren="false"/>
+
+
+
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_nav.xml"
+    app:startDestination="@id/fragment_moyu">
+
+
+    <fragment
+        android:id="@+id/fragment_moyu"
+        android:name="com.example.sunofbeachagain.fragment.MoYuFragment" />
+
+    <fragment
+        android:id="@+id/fragment_essay"
+        android:name="com.example.sunofbeachagain.fragment.EssayFragment" />
+
+    <fragment
+        android:id="@+id/fragment_question"
+        android:name="com.example.sunofbeachagain.fragment.QuestionFragment" />
+
+    <fragment
+        android:id="@+id/fragment_message"
+        android:name="com.example.sunofbeachagain.fragment.MessageFragment" />
+
+    <fragment
+        android:id="@+id/fragment_user"
+        android:name="com.example.sunofbeachagain.fragment.UserFragment" />
+</navigation>

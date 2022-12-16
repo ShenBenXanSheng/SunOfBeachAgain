@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        >
+
+        <ImageView
+            android:id="@+id/item_moyu_banner_iv"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@mipmap/paimeng"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:scaleType="centerCrop"
+
+            />
+    </LinearLayout>
+</layout>

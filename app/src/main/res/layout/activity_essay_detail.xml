@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/essay_detail_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activity.essay.EssayDetailActivity">
+
+
+        <WebView
+            android:id="@+id/essay_detail_web"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="13"
+            android:overScrollMode="never" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/essay_detail_comment_et"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:paddingStart="5dp"
+                android:hint="请友善发言"
+                android:layout_margin="5dp"
+                android:textSize="14sp"
+                tools:ignore="NestedWeights" />
+
+            <ImageView
+                android:id="@+id/essay_detail_go_top_or_comment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/huifu" />
+
+            <ImageView
+                android:id="@+id/essay_detail_shoucang"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="6dp"
+                android:src="@mipmap/shoucangstar" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

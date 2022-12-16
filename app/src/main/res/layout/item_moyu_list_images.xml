@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="10dp"
+
+        android:layout_marginEnd="10dp">
+
+        <ImageView
+            android:id="@+id/item_moyu_image"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:src="@mipmap/leishen"
+
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+</layout>

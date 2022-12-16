@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/user_center_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activity.user.UserCenterActivity">
+
+        <com.example.sunofbeachagain.view.UserCenterNestedScrollView
+            android:id="@+id/user_center_nest_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/user_center_head_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true">
+
+                    <com.google.android.material.appbar.AppBarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:fitsSystemWindows="true">
+
+                        <com.google.android.material.appbar.CollapsingToolbarLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:fitsSystemWindows="true">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:fitsSystemWindows="true">
+
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fitsSystemWindows="true">
+
+                                    <ImageView
+                                        android:id="@+id/user_center_cover"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="250dp"
+                                        android:fitsSystemWindows="true"
+                                        android:scaleType="centerCrop"
+
+                                        />
+
+                                    <ImageView
+                                        android:id="@+id/user_center_avatar"
+                                        android:layout_width="90dp"
+                                        android:layout_height="90dp"
+                                        android:layout_alignBottom="@id/user_center_cover"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginBottom="-35dp" />
+
+                                    <TextView
+                                        android:id="@+id/user_center_nickname"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/user_center_avatar"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="40dp"
+                                        android:text="什本先生"
+                                        android:textColor="@color/black"
+                                        android:textSize="18sp" />
+
+                                    <TextView
+                                        android:id="@+id/user_center_position"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/user_center_nickname"
+                                        android:layout_marginStart="11dp"
+                                        android:textColor="@color/black"
+                                        android:layout_marginTop="5dp"
+                                        android:text="摸鱼工程师" />
+
+
+                                    <TextView
+                                        android:id="@+id/user_center_msg"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/user_center_position"
+                                        android:layout_marginStart="11dp"
+                                        android:layout_marginTop="5dp"
+                                        android:textColor="@color/black"
+                                        android:text="学习先进的摸鱼技术中..."
+                                        android:textSize="12sp" />
+
+                                    <TextView
+                                        android:id="@+id/user_center_edit_profile"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/user_center_cover"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginTop="30dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:background="@drawable/shape_moyu_theme"
+                                        android:paddingStart="10dp"
+                                        android:paddingTop="5dp"
+                                        android:paddingEnd="10dp"
+                                        android:paddingBottom="5dp"
+                                        android:text="关注"
+                                        android:textColor="@color/mainColor" />
+
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/user_center_msg"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="5dp">
+
+                                        <TextView
+                                            android:id="@+id/user_center_fans_count"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="2"
+                                            android:textColor="@color/mainColor"
+                                            android:textSize="18sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="3dp"
+                                            android:text="粉丝"
+                                            android:textColor="@color/black"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:id="@+id/user_center_follow_count"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="10dp"
+                                            android:text="2"
+
+                                            android:textColor="@color/mainColor"
+                                            android:textSize="18sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="3dp"
+                                            android:text="关注"
+                                            android:textColor="@color/black"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+                                </RelativeLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/user_center_toolbar1_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="36dp"
+                                        android:visibility="invisible" />
+
+                                    <Toolbar
+                                        android:id="@+id/user_center_toolbar1"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="50dp"
+                                        android:navigationIcon="@mipmap/back" />
+
+
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </com.google.android.material.appbar.CollapsingToolbarLayout>
+                    </com.google.android.material.appbar.AppBarLayout>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/user_center_content_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mainColor"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/user_center_tabLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+
+                        app:background="@color/mainColor"
+                        app:tabIndicatorColor="@color/mainColor"
+                        app:tabIndicatorFullWidth="false"
+                        app:tabRippleColor="@color/white"
+
+                        />
+
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/user_center_viewpage2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.example.sunofbeachagain.view.UserCenterNestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/user_center_toolbar2_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/mainColor"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="36dp" />
+
+            <Toolbar
+                android:id="@+id/user_center_toolbar2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:navigationIcon="@mipmap/back">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="用户中心"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+            </Toolbar>
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

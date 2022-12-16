@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#efefef"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/pop_user_male"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="程序猿"
+            android:textColor="@color/black"
+            android:layout_marginBottom="1dp"
+            android:textSize="16sp" />
+
+        <TextView
+
+            android:id="@+id/pop_user_female"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="程序媛"
+            android:textColor="@color/black"
+            android:layout_marginBottom="1dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/pop_user_coders"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="程序员"
+            android:layout_marginBottom="1dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</layout>

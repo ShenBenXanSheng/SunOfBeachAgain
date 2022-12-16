@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="每日登陆奖励"
+                android:textColor="@color/mainColor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/item_message_system_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2002-11-11 09:09:09"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/item_message_system_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2002-11-11 09:09:09"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
+</layout>

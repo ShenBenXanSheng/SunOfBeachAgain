@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/moyu_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false">
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/moyu_smartRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <com.example.sunofbeachagain.view.MoYuListNestedScrollView
+                android:id="@+id/moyu_nv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/moyu_head_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipChildren="false">
+
+
+                        <com.example.sunofbeachagain.view.SobMoYuViewPager
+                            android:id="@+id/moyu_list_vp"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="5dp"
+                            android:clipChildren="false" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/moyu_list_vp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="10dp">
+
+                            <ImageView
+                                android:id="@+id/moyu_point_1"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginEnd="2dp"
+                                android:src="@drawable/select_banner_point" />
+
+                            <ImageView
+                                android:id="@+id/moyu_point_2"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginEnd="2dp"
+                                android:src="@drawable/select_banner_point" />
+
+                            <ImageView
+                                android:id="@+id/moyu_point_3"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginEnd="2dp"
+                                android:src="@drawable/select_banner_point" />
+
+                            <ImageView
+                                android:id="@+id/moyu_point_4"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginEnd="2dp"
+                                android:src="@drawable/select_banner_point" />
+
+                            <ImageView
+                                android:id="@+id/moyu_point_5"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginEnd="2dp"
+                                android:src="@drawable/select_banner_point" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+
+                    <com.example.sunofbeachagain.view.MoYuRecyclerView
+                        android:id="@+id/moyu_list_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#F5F5F5"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                </LinearLayout>
+            </com.example.sunofbeachagain.view.MoYuListNestedScrollView>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/moyu_publication_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="40dp"
+            android:src="@mipmap/fabiao"
+            app:tint="@color/white"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+</layout>

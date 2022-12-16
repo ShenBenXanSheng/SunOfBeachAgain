@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginBottom="1dp"
+        android:elevation="1dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_user_price_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="吉林省"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+</layout>

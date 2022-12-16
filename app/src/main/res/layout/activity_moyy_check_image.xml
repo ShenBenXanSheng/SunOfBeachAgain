@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/moyu_check_image_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/gray2"
+        app:navigationIcon="@mipmap/back_white">
+
+        <TextView
+            android:id="@+id/moyu_check_image_select_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            tools:text="1/2" />
+
+
+        <CheckBox
+            android:id="@+id/moyu_check_image_cb1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:checked="true"
+            android:visibility="visible" />
+
+        <CheckBox
+            android:id="@+id/moyu_check_image_cb2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:checked="true"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/moyu_check_image_cb3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:checked="true"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/moyu_check_image_cb4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:checked="true"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/moyu_check_image_cb5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:checked="true"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/moyu_check_image_cb6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:checked="true"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/moyu_check_image_cb7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:checked="true"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/moyu_check_image_cb8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:checked="true"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/moyu_check_image_cb9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:checked="true"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/moyu_check_image_vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/gray2">
+
+        <Button
+            android:id="@+id/moyu_check_image_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            tools:text="确定(2)" />
+    </RelativeLayout>
+
+</LinearLayout>
