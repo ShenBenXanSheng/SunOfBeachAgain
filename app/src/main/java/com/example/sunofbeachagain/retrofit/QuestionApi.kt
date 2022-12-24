@@ -13,6 +13,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface QuestionApi {
+    //获得问答列表
     @GET("/ct/wenda/list")
     suspend fun getQuestionList(
         @Query("page") page: Int,
@@ -20,12 +21,15 @@ interface QuestionApi {
         @Query("category") category: String,
     ): QuestionListBean
 
+    //获得问答排行榜
     @GET("/ast/rank/answer-count/10")
     suspend fun getQuestionRankings(): QuestionRankingsBean
 
+    //评论
     @POST("/ct/wenda/comment")
     suspend fun postQuestionComment(@Header("sob_token") token:String,@Body questionCommentBody: QuestionCommentBody):SobBean
 
+    //回复
     @POST("/ct/wenda/sub-comment")
     suspend fun postQuestionSubComment(@Header("sob_token") token: String,@Body questionSubCommentBody: QuestionSubCommentBody):SobBean
 }
