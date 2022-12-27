@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.text.substring
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -29,6 +30,7 @@ import com.example.sunofbeachagain.utils.NetWorkUtils.*
 import com.example.sunofbeachagain.utils.StringUtil
 import com.example.sunofbeachagain.utils.ToastUtil
 import com.example.sunofbeachagain.viewmodel.LoginViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -48,9 +50,17 @@ class LoginActivity : AppCompatActivity() {
         ViewModelProvider(this)[LoginViewModel::class.java]
     }
 
+
+
     private val loginSp by lazy {
         getSharedPreferences(Constant.SOB_LOGIN_SP_KEY, MODE_PRIVATE)
     }
+
+    private val rememberAccountSp by lazy {
+        getSharedPreferences("rememberAccountSp", MODE_PRIVATE)
+    }
+
+    private val rememberAccountList = mutableListOf<String>()
 
     private var getTokenAgain = false
 
@@ -64,7 +74,6 @@ class LoginActivity : AppCompatActivity() {
         val isLogin = loginSp.getBoolean(Constant.SOB_IS_LOGIN, false)
 
         val spToken = loginSp.getString(Constant.SOB_TOKEN, "")
-
 
 
         if (isLogin) {
@@ -82,6 +91,24 @@ class LoginActivity : AppCompatActivity() {
             activityLoginBinding.loginToolbar.navigationIcon =
                 resources.getDrawable(R.mipmap.back, null)
         }
+
+        rememberAccountSp.getStringSet(Constant.SOB_REMEMBER_ACCOUNT,null)?.let {
+            val toMutableList = it.toMutableList()
+
+            if (StringUtil.isPhone(toMutableList[0])) {
+                loginViewModel.getLoginAvatar(toMutableList[0])
+            }
+
+            activityLoginBinding.loginPhoneNumberEd.setText(toMutableList[0])
+
+            activityLoginBinding.loginPasswordEd.setText( toMutableList[1])
+
+
+
+            activityLoginBinding.rememberAccountCb.isChecked = true
+
+        }
+
 
         initView()
         initListener()
@@ -172,7 +199,21 @@ class LoginActivity : AppCompatActivity() {
                         if (!loginCb.isChecked) {
                             ToastUtil.setText("请勾选下方协议")
                         } else {
+
                             val userBody = UserBody(phoneNumber, password)
+
+
+                            if (rememberAccountCb.isChecked) {
+                                rememberAccountList.add(phoneNumber)
+
+                                rememberAccountList.add(loginPasswordEd.text.toString().trim())
+
+                                rememberAccountSp.edit().putStringSet(Constant.SOB_REMEMBER_ACCOUNT,rememberAccountList.toMutableSet()).apply()
+                            }else{
+                                rememberAccountSp.edit().clear().apply()
+                            }
+
+
                             loginLoginBt.isEnabled = false
                             loginViewModel.postLogin(userBody, verifyCode)
                         }
@@ -195,26 +236,27 @@ class LoginActivity : AppCompatActivity() {
                 loginToHome("null")
             }
 
-            val enrollRegisterForActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                val enrollPhoneNumber = it.data?.getStringExtra(Constant.SOB_ENROLL_PHONE_NUMBER)
+            val enrollRegisterForActivityResult =
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    val enrollPhoneNumber =
+                        it.data?.getStringExtra(Constant.SOB_ENROLL_PHONE_NUMBER)
 
 
-                enrollPhoneNumber?.let {phoneNumber->
-                    loginPhoneNumberEd.setText(phoneNumber)
-                    loginPhoneNumberEd.setSelection(phoneNumber.length)
+                    enrollPhoneNumber?.let { phoneNumber ->
+                        loginPhoneNumberEd.setText(phoneNumber)
+                        loginPhoneNumberEd.setSelection(phoneNumber.length)
+                    }
+
+
                 }
 
-
-
-            }
-
             loginRegisterTv.setOnClickListener {
-                val intent = Intent(this@LoginActivity,EnrollActivity::class.java)
+                val intent = Intent(this@LoginActivity, EnrollActivity::class.java)
                 enrollRegisterForActivityResult.launch(intent)
             }
 
             loginForgerTv.setOnClickListener {
-                val intent = Intent(this@LoginActivity,ForgetPasswordActivity::class.java)
+                val intent = Intent(this@LoginActivity, ForgetPasswordActivity::class.java)
                 startActivity(intent)
             }
 

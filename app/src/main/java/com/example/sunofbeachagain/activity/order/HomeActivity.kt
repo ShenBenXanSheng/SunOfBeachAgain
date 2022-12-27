@@ -48,6 +48,7 @@ class HomeActivity : BaseActivity() {
     private val upSp = BaseApp.mContext?.getSharedPreferences("UpSp", MODE_PRIVATE)
 
     private lateinit var messageIcon: MenuItem
+
     private val permissionList = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
     val messageViewModel by lazy {
@@ -230,6 +231,8 @@ class HomeActivity : BaseActivity() {
 
     override fun initDataListener() {
         super.initDataListener()
+
+
 
         messageViewModel.messageCountLiveData.observe(this) {
             if (it != null) {

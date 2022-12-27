@@ -51,4 +51,6 @@ object Constant {
     const val SOB_QUESTION_SUB_COMMENT = "questionSubComment"
 
     const val SOB_QUESTION_COMMENT_RESULT = "questionCommentResult"
+
+    const val SOB_REMEMBER_ACCOUNT = "loginRememberAccount"
 }
