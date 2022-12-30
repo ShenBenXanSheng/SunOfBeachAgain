@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sunofbeachagain.R
 import com.example.sunofbeachagain.domain.UserInfoMsg
+import com.example.sunofbeachagain.domain.bean.SobBean
 import com.example.sunofbeachagain.domain.bean.UserFansStateBean
 import com.example.sunofbeachagain.retrofit.RetrofitUtil
 import kotlinx.coroutines.launch
@@ -62,6 +63,30 @@ class UserCenterViewModel : ViewModel() {
                 val userFansState = RetrofitUtil.userApi.getUserFansState(token, userId)
                 userFansStateLiveData.postValue(userFansState)
             } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    val followLiveData = MutableLiveData<SobBean>()
+
+    fun followUser(token: String,userId: String){
+        viewModelScope.launch {
+            try {
+                followLiveData.postValue(RetrofitUtil.userApi.postFollowUser(token, userId))
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    val unFollowLiveData = MutableLiveData<SobBean>()
+
+    fun unfollowUser(token: String, userId: String){
+        viewModelScope.launch {
+            try {
+                followLiveData.postValue(RetrofitUtil.userApi.postUnfollowUser(token, userId))
+            }catch (e:Exception){
                 e.printStackTrace()
             }
         }

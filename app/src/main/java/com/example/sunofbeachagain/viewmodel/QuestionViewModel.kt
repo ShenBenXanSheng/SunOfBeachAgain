@@ -6,11 +6,15 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.sunofbeachagain.base.BaseApp
 import com.example.sunofbeachagain.base.BaseViewModel
 import com.example.sunofbeachagain.domain.bean.QuestionData
 import com.example.sunofbeachagain.domain.bean.QuestionRankingsData
 import com.example.sunofbeachagain.repository.QuestionListRepository
 import com.example.sunofbeachagain.retrofit.RetrofitUtil
+import com.example.sunofbeachagain.room.QuestionEntity
+import com.example.sunofbeachagain.room.SobDataBase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -21,6 +25,8 @@ class QuestionViewModel : BaseViewModel() {
 
     fun getQuestionList(state: String) {
         questionListRepository.getQuestionState(state)
+
+        questionListRepository.getQuestionDataSources(0)
 
         questionListLiveData.postValue(Pager(PagingConfig(1),
             null) { questionListRepository }.flow.cachedIn(viewModelScope))
@@ -54,6 +60,28 @@ class QuestionViewModel : BaseViewModel() {
             }
         }
     }
+
+    private val questionDataBase by lazy {
+        SobDataBase.getSobDataBase(BaseApp.mContext!!)
+    }
+
+    private val questionDao by lazy {
+        questionDataBase.getQuestionDao()
+    }
+
+    fun insertQuestionEntity(questionEntity: QuestionEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                questionDao.insertQuestionData(questionEntity)
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun queryQuestion() = questionDao.queryQuestionList()
+
+
 }
 
 

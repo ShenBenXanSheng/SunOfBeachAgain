@@ -51,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-
     private val loginSp by lazy {
         getSharedPreferences(Constant.SOB_LOGIN_SP_KEY, MODE_PRIVATE)
     }

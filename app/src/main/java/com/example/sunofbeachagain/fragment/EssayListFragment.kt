@@ -108,20 +108,28 @@ class EssayListFragment(private val essayCategoryIdAndNameData: EssayCategoryIdA
                     sobDialog.setOnDialogShouCangConfirmClick(object :
                         SobDialog.OnDialogShouCangConfirmClick {
                         override fun onDialogShouCangConfirmClick() {
-                            val intent = Intent(currentActivity, UserShouCansActivity::class.java)
-
-                            intent.putExtra(Constant.SOB_ESSAY_TITLE, title)
-
-                            intent.putExtra(Constant.SOB_ESSAY_ID,
-                                "http://www.debuglive.cn/sob/${essayId}")
-
-                            intent.putExtra(Constant.SOB_IS_SHOUCHANG, true)
-
                             if (tokenBean != null) {
-                                intent.putExtra(Constant.SOB_TOKEN, tokenBean.token)
+                                if (tokenBean.checkTokenBean.success) {
+                                    val intent = Intent(currentActivity, UserShouCansActivity::class.java)
+
+                                    intent.putExtra(Constant.SOB_ESSAY_TITLE, title)
+
+                                    intent.putExtra(Constant.SOB_ESSAY_ID,
+                                        "http://www.debuglive.cn/sob/${essayId}")
+
+                                    intent.putExtra(Constant.SOB_IS_SHOUCHANG, true)
+
+
+                                        intent.putExtra(Constant.SOB_TOKEN, tokenBean.token)
+
+
+                                    registerForActivityResult.launch(intent)
+                                }else{
+                                    ToastUtil.setText("登陆一下吧")
+                                }
                             }
 
-                            registerForActivityResult.launch(intent)
+
                         }
 
                     })

@@ -29,7 +29,6 @@ class MoYuListNestedScrollView : NestedScrollView {
 
     override fun onNestedPreScroll(target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
 
-
         if (scrollSize < headHeight) {
             scrollBy(dx, dy)
             consumed[0] = dx

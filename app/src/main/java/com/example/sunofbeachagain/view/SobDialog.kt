@@ -4,11 +4,14 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.example.sunofbeachagain.databinding.DialogUserExitOrLoginBinding
 
 class SobDialog : Dialog {
     constructor(context: Context) : this(context, 0)
     constructor(context: Context, resId: Int) : super(context, resId)
+
+    private lateinit var onDialogCleanShouCangConfirmClick: OnDialogCleanShouCangConfirmClick
 
     private lateinit var onDialogDeleteShouCangConfirmClick: OnDialogDeleteShouCangConfirmClick
 
@@ -40,7 +43,15 @@ class SobDialog : Dialog {
 
             dialogConfirm.text = dialogConfirmText
 
+
+            if (dialogMsgText=="已经收藏过了"){
+                dialogGiveUp.visibility = View.GONE
+            }else{
+                dialogGiveUp.visibility = View.VISIBLE
+            }
         }
+
+
     }
 
     private fun initListener() {
@@ -71,7 +82,17 @@ class SobDialog : Dialog {
                         if (this@SobDialog::onDialogDeleteShouCangConfirmClick.isInitialized) {
                             onDialogDeleteShouCangConfirmClick.onDialogDeleteShouCangClick()
                         }
+
                     }
+
+                    "真的要清空所有收藏吗?"->{
+                        if (this@SobDialog::onDialogCleanShouCangConfirmClick.isInitialized) {
+                            onDialogCleanShouCangConfirmClick.onDialogCleanShouCangClick()
+                        }
+                    }
+
+
+
                 }
 
                 dismiss()
@@ -114,5 +135,13 @@ class SobDialog : Dialog {
 
     interface OnDialogDeleteShouCangConfirmClick{
         fun onDialogDeleteShouCangClick()
+    }
+
+    fun setOnDialogCleanShouCangConfirmClick(onDialogCleanShouCangConfirmClick: OnDialogCleanShouCangConfirmClick){
+        this.onDialogCleanShouCangConfirmClick = onDialogCleanShouCangConfirmClick
+    }
+
+    interface OnDialogCleanShouCangConfirmClick{
+        fun onDialogCleanShouCangClick()
     }
 }

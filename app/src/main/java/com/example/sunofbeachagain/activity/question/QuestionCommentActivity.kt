@@ -44,6 +44,10 @@ class QuestionCommentActivity : BaseActivityViewModel<QuestionCommentViewModel>(
     override fun initListener() {
         super.initListener()
         activityQuestionCommentBinding.apply {
+            questionCommentToolbar.setNavigationOnClickListener {
+                finish()
+            }
+
             questionCommentPublish.setOnClickListener {
                 val edText = questionCommentEt.text.toString().trim()
                 if (!edText.isNullOrEmpty()) {

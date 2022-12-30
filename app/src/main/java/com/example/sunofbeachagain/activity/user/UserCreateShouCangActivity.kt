@@ -63,8 +63,14 @@ class UserCreateShouCangActivity : BaseActivityViewModel<UserCreateShouCangViewM
                 intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, false)
                 intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 1)
                 intent.putExtra(MultiImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST, defaultList)
+
                 startActivityForResult(intent, 1)
             }
+
+            createShouCangToolbar.setNavigationOnClickListener {
+                finish()
+            }
+
             loginViewModel.checkTokenResultLiveData.observe(this@UserCreateShouCangActivity) { checkToken ->
 
                 userCreateConfirmCreateTv.setOnClickListener {

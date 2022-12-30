@@ -20,6 +20,7 @@
         android:theme="@style/Theme.SunOfBeachAgain"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <activity
             android:name=".activity.user.SetUserMsgActivity"
             android:exported="false">
@@ -139,7 +140,7 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.example.sunofbeachagain.activity.question.QuestionDetailActivity"
+            android:name=".activity.question.QuestionDetailActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
@@ -189,7 +190,13 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.example.sunofbeachagain.activity.question.QuestionCommentActivity"
+            android:name=".activity.question.QuestionCommentActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name="com.example.sunofbeachagain.activity.question.QuestionShouCangActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />

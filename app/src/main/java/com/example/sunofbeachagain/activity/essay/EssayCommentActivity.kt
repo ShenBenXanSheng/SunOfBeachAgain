@@ -54,6 +54,10 @@ class EssayCommentActivity : BaseActivityViewModel<EssayCommentViewModel>() {
     override fun initListener() {
         super.initListener()
         activityEssayDetailCommentBinding.apply {
+            essayCommentToolbar.setNavigationOnClickListener {
+                finish()
+            }
+
             essayCommentPublish.setOnClickListener {
                 val trim = essayCommentEt.text.toString().trim()
                 if (!trim.isNullOrEmpty()) {

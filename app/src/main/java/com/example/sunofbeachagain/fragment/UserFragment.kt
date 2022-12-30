@@ -8,6 +8,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.sunofbeachagain.R
 import com.example.sunofbeachagain.activity.order.HomeActivity
 import com.example.sunofbeachagain.activity.order.SobRankingsActivity
+import com.example.sunofbeachagain.activity.question.QuestionShouCangActivity
 import com.example.sunofbeachagain.activity.user.UserCenterActivity
 import com.example.sunofbeachagain.activity.user.UserFansOrFollowActivity
 import com.example.sunofbeachagain.activity.user.UserMoYuActivity
@@ -17,6 +18,7 @@ import com.example.sunofbeachagain.databinding.FragmentUserBinding
 import com.example.sunofbeachagain.utils.Constant
 import com.example.sunofbeachagain.utils.ToastUtil
 import com.example.sunofbeachagain.view.SobDialog
+import com.example.sunofbeachagain.viewmodel.QuestionShouCangViewModel
 import com.example.sunofbeachagain.viewmodel.UserViewModel
 
 
@@ -191,11 +193,20 @@ class UserFragment : BaseFragmentViewModel<HomeActivity, UserViewModel>() {
                         }
                     }
 
+                    userQuestionShoucangContainer.setOnClickListener {
+                        if (checkToken != null) {
+                            val intent =
+                                Intent(currentActivity, QuestionShouCangActivity::class.java)
+
+                            intent.putExtra(Constant.SOB_TOKEN, checkToken.token)
+
+                            startActivity(intent)
+                        }
+                    }
+
                 }
 
-                userAboutContainer.setOnClickListener {
-                    ToastUtil.setText("练习软件，暂无关于")
-                }
+
 
                 userInfoDataLiveData.observe(this@UserFragment) {
                     userNickname.text = it.nickname

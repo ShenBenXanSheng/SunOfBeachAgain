@@ -8,6 +8,7 @@ import com.example.sunofbeachagain.adapter.LoadMoreAdapter
 import com.example.sunofbeachagain.adapter.UserFollowOrFansAdapter
 import com.example.sunofbeachagain.base.BaseFragmentViewModel
 import com.example.sunofbeachagain.databinding.FragmentUserCenterFansBinding
+import com.example.sunofbeachagain.domain.CheckTokenDataHasToken
 import com.example.sunofbeachagain.repository.UserFollowAndFansRepository
 import com.example.sunofbeachagain.utils.Constant
 import com.example.sunofbeachagain.utils.ToastUtil
@@ -58,12 +59,21 @@ class UserCenterFansFragment(val userId: String?, val token: String?) :
     override fun initDataListener() {
         super.initDataListener()
         currentViewModel.apply {
-            lifecycleScope.launchWhenCreated {
-                getUserFollowOrData(currentToken, currentUserId, "粉丝").collectLatest {
+            loginViewModel.checkTokenResultLiveData.observe(this@UserCenterFansFragment){checkToken->
+                setDataToAdapter(checkToken)
 
-                    userFollowOrFansAdapter.submitData(it)
+
+                currentViewModel.followLiveData.observe(this@UserCenterFansFragment){
+                    if (it.success){
+                        setDataToAdapter(checkToken)
+                    }
+
+                    ToastUtil.setText(it.message)
                 }
+
+
             }
+
 
             userFollowAndFansRepository.userFollowAndFansLoadState.observe(this@UserCenterFansFragment) {
                 when (it) {
@@ -87,6 +97,21 @@ class UserCenterFansFragment(val userId: String?, val token: String?) :
 
     }
 
+    private fun UserCenterFansViewModel.setDataToAdapter(
+        checkToken: CheckTokenDataHasToken?,
+    ) {
+        lifecycleScope.launchWhenCreated {
+            getUserFollowOrData(currentToken, currentUserId, "粉丝").collectLatest {
+
+                userFollowOrFansAdapter.submitData(it)
+            }
+        }
+
+        if (checkToken != null) {
+            userFollowOrFansAdapter.getToken(checkToken.checkTokenBean)
+        }
+    }
+
     override fun initListener() {
         super.initListener()
         userFollowOrFansAdapter.setOnFollowOrFansClickListener(object
@@ -103,7 +128,29 @@ class UserCenterFansFragment(val userId: String?, val token: String?) :
                 startActivity(intent)
             }
 
+            override fun onFollowOrFansFollowAndUnfollowClick(followState: Int, userId: String) {
+                when(followState){
+                    0->{
+                        currentViewModel.followUser(currentToken,userId)
+                    }
+
+                    1->{
+                        currentViewModel.followUser(currentToken,userId)
+                    }
+
+                    2->{
+                        currentViewModel.unfollowUser(currentToken,userId)
+                    }
+
+                    3->{
+                        currentViewModel.unfollowUser(currentToken,userId)
+                    }
+                }
+            }
+
         })
+
+
     }
 
     override fun getCurrentViewModel() = UserCenterFansViewModel::class.java

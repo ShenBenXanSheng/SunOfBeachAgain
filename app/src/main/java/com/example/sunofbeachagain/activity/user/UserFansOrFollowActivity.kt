@@ -8,8 +8,10 @@ import com.example.sunofbeachagain.adapter.LoadMoreAdapter
 import com.example.sunofbeachagain.adapter.UserFollowOrFansAdapter
 import com.example.sunofbeachagain.base.BaseActivityViewModel
 import com.example.sunofbeachagain.databinding.ActivityUserFansBinding
+import com.example.sunofbeachagain.domain.CheckTokenDataHasToken
 import com.example.sunofbeachagain.repository.UserFollowAndFansRepository
 import com.example.sunofbeachagain.utils.Constant
+import com.example.sunofbeachagain.utils.ToastUtil
 import com.example.sunofbeachagain.viewmodel.UserCenterFansViewModel
 import com.scwang.smart.refresh.header.MaterialHeader
 import kotlinx.coroutines.flow.collectLatest
@@ -34,6 +36,8 @@ class UserFansOrFollowActivity : BaseActivityViewModel<UserCenterFansViewModel>(
     private var currentState = ""
     override fun initView() {
 
+        currentState = intent.getStringExtra(Constant.SOB_FANS_OR_FOLLOW_STATE).toString()
+
         setToolBarTheme(if (currentState == "粉丝") {
             "粉丝列表"
         } else {
@@ -41,8 +45,6 @@ class UserFansOrFollowActivity : BaseActivityViewModel<UserCenterFansViewModel>(
         }, R.mipmap.back, R.color.mainColor, R.color.white, false)
 
         currentUserId = intent.getStringExtra(Constant.SOB_USER_ID).toString()
-
-        currentState = intent.getStringExtra(Constant.SOB_FANS_OR_FOLLOW_STATE).toString()
 
         activityUserFansBinding.apply {
             userFansRv.adapter = userFollowOrFansAdapter.withLoadStateFooter(loadMoreAdapter)
@@ -60,41 +62,21 @@ class UserFansOrFollowActivity : BaseActivityViewModel<UserCenterFansViewModel>(
 
         loginViewModel.checkTokenResultLiveData.observe(this) { checkToken ->
             currentViewModel?.apply {
-                if (checkToken != null) {
-                    if (checkToken.checkTokenBean.success) {
-                        lifecycleScope.launchWhenCreated {
-                            getUserFollowOrData(checkToken.token,
-                                currentUserId,
-                                if (currentState == "粉丝") {
-                                    "粉丝"
-                                } else {
-                                    "关注"
-                                }).collectLatest {
-                                userFollowOrFansAdapter.submitData(it)
-                            }
-                        }
-                    }
-                }
+                setDataToAdapter(checkToken)
 
 
                 activityUserFansBinding.userFansSmartRefresh.setOnRefreshListener {
-                    if (checkToken != null) {
-                        if (checkToken.checkTokenBean.success) {
-                            lifecycleScope.launchWhenCreated {
-                                getUserFollowOrData(checkToken.token,
-                                    currentUserId,
-                                    if (currentState == "粉丝") {
-                                        "粉丝"
-                                    } else {
-                                        "关注"
-                                    }).collectLatest {
-                                    userFollowOrFansAdapter.submitData(it)
-                                }
-                            }
-                        }
-                    }
+                    setDataToAdapter(checkToken)
 
                     it.finishRefresh()
+                }
+
+                currentViewModel?.followLiveData?.observe(this@UserFansOrFollowActivity){
+                    if (it.success){
+                        setDataToAdapter(checkToken)
+                    }
+
+                    ToastUtil.setText(it.message)
                 }
             }
 
@@ -110,6 +92,33 @@ class UserFansOrFollowActivity : BaseActivityViewModel<UserCenterFansViewModel>(
                     }
 
                     startActivity(intent)
+                }
+
+                override fun onFollowOrFansFollowAndUnfollowClick(
+                    followState: Int,
+                    userId: String,
+                ) {
+                    if (checkToken != null) {
+                        when(followState){
+                            0->{
+                                currentViewModel?.followUser(checkToken.token,userId)
+                            }
+
+                            1->{
+                                currentViewModel?.followUser(checkToken.token,userId)
+                            }
+
+                            2->{
+                                currentViewModel?.unfollowUser(checkToken.token,userId)
+                            }
+
+                            3->{
+                                currentViewModel?.unfollowUser(checkToken.token,userId)
+                            }
+                        }
+                    }
+
+
                 }
 
             })
@@ -136,6 +145,28 @@ class UserFansOrFollowActivity : BaseActivityViewModel<UserCenterFansViewModel>(
 
                     else -> {}
                 }
+            }
+        }
+    }
+
+    private fun UserCenterFansViewModel.setDataToAdapter(
+        checkToken: CheckTokenDataHasToken?,
+    ) {
+        if (checkToken != null) {
+            if (checkToken.checkTokenBean.success) {
+                lifecycleScope.launchWhenCreated {
+                    getUserFollowOrData(checkToken.token,
+                        currentUserId,
+                        if (currentState == "粉丝") {
+                            "粉丝"
+                        } else {
+                            "关注"
+                        }).collectLatest {
+                        userFollowOrFansAdapter.submitData(it)
+                    }
+                }
+
+                userFollowOrFansAdapter.getToken(checkToken.checkTokenBean)
             }
         }
     }

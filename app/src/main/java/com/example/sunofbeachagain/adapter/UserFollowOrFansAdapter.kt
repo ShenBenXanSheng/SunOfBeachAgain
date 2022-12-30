@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.sunofbeachagain.databinding.ItemUserCenterFollowOrFansBinding
+import com.example.sunofbeachagain.domain.bean.CheckTokenBean
 import com.example.sunofbeachagain.domain.bean.UserFollowAndFans
 
 class UserFollowOrFansAdapter : PagingDataAdapter<UserFollowAndFans, InnerHolder>(object :
@@ -24,6 +25,8 @@ class UserFollowOrFansAdapter : PagingDataAdapter<UserFollowAndFans, InnerHolder
     }
 
 }) {
+    private lateinit var checkTokenBean: CheckTokenBean
+
     private lateinit var onFollowOrFansClickListener: OnFollowOrFansClickListener
 
     override fun onBindViewHolder(holder: InnerHolder, position: Int) {
@@ -56,6 +59,20 @@ class UserFollowOrFansAdapter : PagingDataAdapter<UserFollowAndFans, InnerHolder
                     }
                 }
 
+                if (this@UserFollowOrFansAdapter::checkTokenBean.isInitialized) {
+                    if (it.userId == checkTokenBean.data.id) {
+                        itemFollowOrFansState.text = "自己"
+                    } else {
+
+                        itemFollowOrFansState.setOnClickListener {view->
+                            if (this@UserFollowOrFansAdapter::onFollowOrFansClickListener.isInitialized) {
+                                onFollowOrFansClickListener.onFollowOrFansFollowAndUnfollowClick(it.relative,it.userId)
+                            }
+                        }
+
+                    }
+                }
+
                 itemFollowOrFansNickname.text = it.nickname
 
                 itemFollowOrFansAvatar.setOnClickListener { view ->
@@ -79,7 +96,15 @@ class UserFollowOrFansAdapter : PagingDataAdapter<UserFollowAndFans, InnerHolder
         this.onFollowOrFansClickListener = onFollowOrFansClickListener
     }
 
+    fun getToken(checkTokenBean: CheckTokenBean) {
+        this.checkTokenBean = checkTokenBean
+
+        notifyDataSetChanged()
+    }
+
     interface OnFollowOrFansClickListener {
         fun onFollowOrFansAvatarClick(userId: String)
+
+        fun onFollowOrFansFollowAndUnfollowClick(followState: Int, userId: String)
     }
 }

@@ -16,6 +16,7 @@ import com.example.sunofbeachagain.adapter.UserCenterViewPageAdapter
 import com.example.sunofbeachagain.base.BaseActivityViewModel
 import com.example.sunofbeachagain.databinding.ActivityUserCenterBinding
 import com.example.sunofbeachagain.utils.Constant
+import com.example.sunofbeachagain.utils.ToastUtil
 import com.example.sunofbeachagain.viewmodel.UserCenterViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -121,25 +122,78 @@ class UserCenterActivity : BaseActivityViewModel<UserCenterViewModel>() {
                     if (tokenData.checkTokenBean.success) {
                         userCenterViewPageAdapter.getToken(tokenData.token)
                         if (currentUserId == tokenData.checkTokenBean.data.id) {
-                            userCenterEditProfile.text = "编辑资料"
+
+                            userCenterEditProfile.visibility = View.VISIBLE
+                            userCenterFollowOrUnfollow.visibility = View.GONE
+
                         } else {
-                            currentViewModel?.getFansStateData( tokenData.token,currentUserId)
+                            userCenterEditProfile.visibility = View.GONE
+                            userCenterFollowOrUnfollow.visibility = View.VISIBLE
+
+                            currentViewModel?.getFansStateData(tokenData.token, currentUserId)
 
                         }
+
+
 
 
                         userCenterEditProfile.setOnClickListener {
-                           val intent = Intent(this@UserCenterActivity,SetUserMsgActivity::class.java)
 
-                            intent.putExtra(Constant.SOB_TOKEN,tokenData.token)
+                                val intent =
+                                    Intent(this@UserCenterActivity, SetUserMsgActivity::class.java)
 
-                            intent.putExtra(Constant.SOB_USER_ID,tokenData.checkTokenBean.data.id)
+                                intent.putExtra(Constant.SOB_TOKEN, tokenData.token)
 
-                            startActivity(intent)
+                                intent.putExtra(Constant.SOB_USER_ID,
+                                    tokenData.checkTokenBean.data.id)
+
+                                startActivity(intent)
                         }
                     }
-                }
 
+
+
+                        currentViewModel?.apply {
+                            userFansStateLiveData.observe(this@UserCenterActivity) {
+                                userCenterFollowOrUnfollow.setOnClickListener {view->
+                                    when (it.data) {
+                                        0 -> {
+                                            followUser(tokenData.token, currentUserId)
+                                        }
+
+                                        1 -> {
+                                            followUser(tokenData.token, currentUserId)
+                                        }
+
+                                        2 -> {
+                                            unfollowUser(tokenData.token, currentUserId)
+                                        }
+                                        3 -> {
+                                            unfollowUser(tokenData.token, currentUserId)
+                                        }
+
+                                        else -> {
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+
+                    currentViewModel?.followLiveData?.observe(this@UserCenterActivity) {
+
+                        if (it.success){
+                            currentViewModel?.getFansStateData(tokenData.token, currentUserId)
+                        }
+
+                        ToastUtil.setText(it.message)
+
+
+                    }
+
+                }
 
             }
         }
@@ -174,7 +228,10 @@ class UserCenterActivity : BaseActivityViewModel<UserCenterViewModel>() {
             }
 
             currentViewModel?.userFansStateLiveData?.observe(this@UserCenterActivity) {
-                userCenterEditProfile.text = when (it.data) {
+
+                Log.d(TAG,it.toString())
+
+                userCenterFollowOrUnfollow.text = when (it.data) {
                     0 -> {
                         "关注"
                     }
@@ -195,6 +252,8 @@ class UserCenterActivity : BaseActivityViewModel<UserCenterViewModel>() {
                     }
                 }
             }
+
+
         }
 
     }

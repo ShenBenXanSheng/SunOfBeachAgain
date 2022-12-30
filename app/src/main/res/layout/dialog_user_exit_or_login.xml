@@ -51,6 +51,7 @@
                     android:background="#dcdcdc" />
 
                 <TextView
+
                     android:id="@+id/dialog_give_up"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

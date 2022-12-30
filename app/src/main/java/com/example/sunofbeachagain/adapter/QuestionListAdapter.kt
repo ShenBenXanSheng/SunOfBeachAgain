@@ -1,5 +1,6 @@
 package com.example.sunofbeachagain.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -10,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.sunofbeachagain.databinding.ItemQuestionListBinding
 import com.example.sunofbeachagain.domain.ItemQuestionData
 import com.example.sunofbeachagain.domain.bean.QuestionData
+import com.example.sunofbeachagain.room.QuestionDao
 
 class QuestionListAdapter :
     PagingDataAdapter<QuestionData, InnerHolder>(object : DiffUtil.ItemCallback<QuestionData>() {
@@ -29,6 +31,8 @@ class QuestionListAdapter :
         val itemQuestionListBinding = holder.dataBinding as ItemQuestionListBinding
         itemQuestionListBinding.apply {
             getItem(position)?.let { questionData ->
+              //  Log.d("TAG",questionData.toString())
+
                 val itemQuestionData = ItemQuestionData(questionData.nickname,
                     questionData.createTime,
                     questionData.title,
@@ -49,6 +53,13 @@ class QuestionListAdapter :
                     if (this@QuestionListAdapter::onQuestionListItemClickListener.isInitialized) {
                         onQuestionListItemClickListener.onQuestionListItemClick(questionData.id)
                     }
+                }
+
+                root.setOnLongClickListener {
+                    if (this@QuestionListAdapter::onQuestionListItemClickListener.isInitialized) {
+                        onQuestionListItemClickListener.onQuestionShouCangClick(questionData)
+                    }
+                    true
                 }
 
                 itemQuestionAvatar.setOnClickListener {
@@ -75,5 +86,7 @@ class QuestionListAdapter :
         fun onQuestionListItemClick(wendaId: String)
 
         fun onQuestionListAvatarClick(userId:String)
+
+        fun onQuestionShouCangClick(questionData: QuestionData)
     }
 }

@@ -118,6 +118,22 @@
                                         android:paddingTop="5dp"
                                         android:paddingEnd="10dp"
                                         android:paddingBottom="5dp"
+                                        android:text="编辑资料"
+                                        android:textColor="@color/mainColor" />
+
+                                    <TextView
+                                        android:id="@+id/user_center_follow_or_unfollow"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/user_center_cover"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginTop="30dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:background="@drawable/shape_moyu_theme"
+                                        android:paddingStart="10dp"
+                                        android:paddingTop="5dp"
+                                        android:paddingEnd="10dp"
+                                        android:paddingBottom="5dp"
                                         android:text="关注"
                                         android:textColor="@color/mainColor" />
 

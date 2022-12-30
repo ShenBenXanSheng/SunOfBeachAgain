@@ -14,6 +14,7 @@
         tools:context=".activity.user.UserCreateShouCangActivity">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/create_shou_cang_toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/mainColor"

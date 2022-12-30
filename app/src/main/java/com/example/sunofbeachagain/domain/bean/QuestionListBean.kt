@@ -1,4 +1,5 @@
 package com.example.sunofbeachagain.domain.bean
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -10,7 +11,7 @@ data class QuestionListBean(
     @SerializedName("message")
     val message: String,
     @SerializedName("success")
-    val success: Boolean
+    val success: Boolean,
 )
 
 data class QuestionListData(
@@ -27,7 +28,7 @@ data class QuestionListData(
     @SerializedName("total")
     val total: Int,
     @SerializedName("totalPage")
-    val totalPage: Int
+    val totalPage: Int,
 )
 
 data class QuestionData(
@@ -36,21 +37,21 @@ data class QuestionData(
     @SerializedName("avatar")
     val avatar: String,
     @SerializedName("categoryId")
-    val categoryId: String,
+    val categoryId: String?,
     @SerializedName("categoryName")
-    val categoryName: String,
+    val categoryName: String?,
     @SerializedName("createTime")
     val createTime: String,
     @SerializedName("id")
     val id: String,
     @SerializedName("isResolve")
-    val isResolve: String,
+    val isResolve: String?,
     @SerializedName("isVip")
-    val isVip: String,
+    val isVip: String?,
     @SerializedName("label")
     val label: Any?,
     @SerializedName("labels")
-    val labels: List<String>,
+    val labels: List<String>?,
     @SerializedName("nickname")
     val nickname: String,
     @SerializedName("sob")
@@ -64,5 +65,26 @@ data class QuestionData(
     @SerializedName("userId")
     val userId: String,
     @SerializedName("viewCount")
-    val viewCount: Int
-)
+    val viewCount: Int,
+) {
+    constructor(
+        answerCount: Int,
+        avatar: String,
+        createTime: String,
+        id: String,
+        nickname: String,
+        sob: Int,
+        thumbUp: Int,
+        title: String,
+        userId: String,
+        viewCount: Int,
+    ) : this(answerCount,
+        avatar,
+        categoryId = null,
+        categoryName = null,
+        createTime,
+        id,
+        isResolve = null,
+        isVip = null,
+        label = null, labels = null, nickname, sob, state = null, thumbUp, title, userId, viewCount)
+}

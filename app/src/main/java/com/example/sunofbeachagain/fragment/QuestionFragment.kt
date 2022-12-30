@@ -1,5 +1,6 @@
 package com.example.sunofbeachagain.fragment
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
 import android.view.Gravity
@@ -15,11 +16,14 @@ import com.example.sunofbeachagain.adapter.QuestionRankingsAdapter
 import com.example.sunofbeachagain.base.BaseFragmentViewModel
 import com.example.sunofbeachagain.databinding.FragmentQuestionBinding
 import com.example.sunofbeachagain.databinding.FragmentQuestionSuccessBinding
+import com.example.sunofbeachagain.domain.bean.QuestionData
 import com.example.sunofbeachagain.repository.QuestionListRepository
+import com.example.sunofbeachagain.room.QuestionEntity
 import com.example.sunofbeachagain.utils.Constant
 import com.example.sunofbeachagain.utils.StatusBarHeightUtil
 import com.example.sunofbeachagain.utils.ToastUtil
 import com.example.sunofbeachagain.view.QuestionPopupWindow
+import com.example.sunofbeachagain.view.SobDialog
 import com.example.sunofbeachagain.viewmodel.QuestionViewModel
 import com.scwang.smart.refresh.header.MaterialHeader
 import kotlinx.coroutines.flow.collectLatest
@@ -59,6 +63,15 @@ class QuestionFragment : BaseFragmentViewModel<HomeActivity, QuestionViewModel>(
         LoadMoreAdapter()
     }
 
+    private val sobDialog by lazy {
+        SobDialog(currentActivity)
+    }
+
+    private val questionShouCangIdList by lazy {
+
+        mutableListOf<String>()
+    }
+
     private var homeActivity: HomeActivity? = null
 
     override fun initView() {
@@ -76,6 +89,11 @@ class QuestionFragment : BaseFragmentViewModel<HomeActivity, QuestionViewModel>(
                 questionSmartRefresh.setRefreshHeader(MaterialHeader(currentActivity))
             }
         }
+
+        for (i in 0..100){
+            questionShouCangIdList.add("1")
+        }
+
     }
 
 
@@ -84,7 +102,6 @@ class QuestionFragment : BaseFragmentViewModel<HomeActivity, QuestionViewModel>(
         fragmentQuestionBinding.apply {
             questionPopupWindow.apply {
                 fragmentQuestionSuccessBinding.apply {
-
 
                     questionTbContentContainer.setOnClickListener {
 
@@ -162,9 +179,43 @@ class QuestionFragment : BaseFragmentViewModel<HomeActivity, QuestionViewModel>(
 
                         registerForActivityResult.launch(intent)
                     }
+
+                    override fun onQuestionShouCangClick(questionData: QuestionData) {
+                        questionData.apply {
+                            val questionEntity = QuestionEntity(id,
+                                userId,
+                                avatar,
+                                nickname,
+                                createTime,
+                                title,
+                                viewCount,
+                                thumbUp,
+                                sob,
+                                answerCount)
+
+
+                            if (questionShouCangIdList.isNullOrEmpty()) {
+                                sobDialog.setMsgText("确定要收藏吗?","收藏")
+
+                                shouCangQuestion(questionEntity)
+
+                            }else{
+                                if (questionShouCangIdList.contains(questionEntity.wendaId)) {
+                                    sobDialog.setMsgText("已经收藏过了","好吧")
+                                }else{
+                                    sobDialog.setMsgText("确定要收藏吗?","收藏")
+                                    shouCangQuestion(questionEntity)
+                                }
+                            }
+
+                            sobDialog.show()
+                        }
+
+                    }
                 })
 
-                questionRankingsAdapter.setOnQuestionRankingsClickListener(object :QuestionRankingsAdapter.OnQuestionRankingsClickListener{
+                questionRankingsAdapter.setOnQuestionRankingsClickListener(object :
+                    QuestionRankingsAdapter.OnQuestionRankingsClickListener {
                     override fun onQuestionRankingsAvatarClickListener(userId: String) {
                         val intent = Intent(currentActivity, UserCenterActivity::class.java)
 
@@ -182,6 +233,14 @@ class QuestionFragment : BaseFragmentViewModel<HomeActivity, QuestionViewModel>(
 
             doubleClickBackTop()
         }
+    }
+
+    private fun shouCangQuestion(questionEntity: QuestionEntity) {
+        sobDialog.setOnDialogShouCangConfirmClick(object : SobDialog.OnDialogShouCangConfirmClick {
+            override fun onDialogShouCangConfirmClick() {
+                currentViewModel.insertQuestionEntity(questionEntity)
+            }
+        })
     }
 
     override fun initDataListener() {
@@ -242,7 +301,20 @@ class QuestionFragment : BaseFragmentViewModel<HomeActivity, QuestionViewModel>(
                     else -> {}
                 }
             }
+
+            queryQuestion().observe(this@QuestionFragment){
+                if (it.size>questionShouCangIdList.size){
+                    ToastUtil.setText("收藏成功!")
+                }
+                questionShouCangIdList.clear()
+                it.forEach { data->
+                    questionShouCangIdList.add(data.wendaId)
+                }
+
+            }
         }
+
+
     }
 
     override fun errorReLoad() {
@@ -259,13 +331,13 @@ class QuestionFragment : BaseFragmentViewModel<HomeActivity, QuestionViewModel>(
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        homeActivity = if (hidden){
+        homeActivity = if (hidden) {
             null
-        }else{
+        } else {
             requireActivity() as HomeActivity
         }
 
-        if (!hidden){
+        if (!hidden) {
             doubleClickBackTop()
         }
     }

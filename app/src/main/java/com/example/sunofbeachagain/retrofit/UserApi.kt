@@ -71,6 +71,14 @@ interface UserApi {
         @Path("userId") userId: String,
     ): UserFansStateBean
 
+    //关注用户
+    @POST("/uc/fans/{userId}")
+    suspend fun postFollowUser(@Header("sob_token") token:String,@Path("userId") userId:String):SobBean
+
+    //取消关注
+    @DELETE("/uc/fans/{userId}")
+    suspend fun postUnfollowUser(@Header("sob_token") token: String, @Path("userId") userId: String):SobBean
+
     //获得积分榜
     @GET("/ast/rank/sob/10")
     suspend fun getSobRankingsData(): SobRankingsBean

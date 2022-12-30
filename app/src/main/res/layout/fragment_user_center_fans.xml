@@ -16,6 +16,7 @@
             android:id="@+id/user_center_fans_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#efefef"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </FrameLayout>

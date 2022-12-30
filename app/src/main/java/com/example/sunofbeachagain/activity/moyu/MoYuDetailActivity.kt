@@ -173,6 +173,14 @@ class MoYuDetailActivity : BaseActivityViewModel<MoYuDetailViewModel>() {
 
                                 currentViewModel?.postMoYuComment(checkToken.token, moYuCommentBody)
 
+                                KeyBordUtil.hideKeyBord(this@MoYuDetailActivity,
+                                    activityMoYuDetailBinding.moyuDetailInputComment)
+                                activityMoYuDetailBinding.moyuDetailInputComment.setText("")
+
+                                ToastUtil.setText("评论成功，刷新一下吧")
+
+
+                                currentViewModel?.getMoYuCommentData(currentMomentId)
 
                             } else {
                                 ToastUtil.setText("先登陆一下")
@@ -180,14 +188,7 @@ class MoYuDetailActivity : BaseActivityViewModel<MoYuDetailViewModel>() {
                             }
                         }
                     }
-                    KeyBordUtil.hideKeyBord(this@MoYuDetailActivity,
-                        activityMoYuDetailBinding.moyuDetailInputComment)
-                    activityMoYuDetailBinding.moyuDetailInputComment.setText("")
 
-                    ToastUtil.setText("评论成功，刷新一下吧")
-
-
-                    currentViewModel?.getMoYuCommentData(currentMomentId)
                 }
 
                 moyuDetailSendSubComment.setOnClickListener {
