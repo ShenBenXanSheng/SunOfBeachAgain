@@ -1,20 +1,12 @@
 package com.example.sunofbeachagain.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.example.sunofbeachagain.base.BaseApp
-import com.example.sunofbeachagain.domain.bean.QuestionData
-import com.example.sunofbeachagain.repository.QuestionListRepository
+import com.example.sunofbeachagain.room.QuestionEntity
 import com.example.sunofbeachagain.room.SobDataBase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class QuestionShouCangViewModel : ViewModel() {
@@ -48,31 +40,22 @@ class QuestionShouCangViewModel : ViewModel() {
     }
 
 
-    lateinit var questionListRepository: QuestionListRepository
-
-    val queryQuestionLiveData = MutableLiveData<Flow<PagingData<QuestionData>>>()
-
-    fun querySingleQuestion(title: String, lifecycleOwner: LifecycleOwner) {
+    val questionEntitySearchLiveData = MutableLiveData<List<QuestionEntity>>()
 
 
-        questionListRepository = QuestionListRepository()
+    fun querySearchQuestion(title: String) {
 
-        questionListRepository.getLifecycle(lifecycleOwner)
-        questionListRepository.getQuestionDataSources(2)
-        questionListRepository.getQueryTitle(title)
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                questionEntitySearchLiveData.postValue(questionDao.queryQuestionData(title))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 
-        queryQuestionLiveData.value = (Pager(PagingConfig(1),
-            initialKey = null) { questionListRepository }.flow.cachedIn(viewModelScope))
     }
 
-    fun queryQuestionList(lifecycleOwner: LifecycleOwner) {
-        questionListRepository = QuestionListRepository()
-
-        questionListRepository.getLifecycle(lifecycleOwner)
-        questionListRepository.getQuestionDataSources(1)
+    fun queryQuestionList() = questionDao.queryQuestionList()
 
 
-        queryQuestionLiveData.value = (Pager(PagingConfig(1),
-            initialKey = null) { questionListRepository }.flow.cachedIn(viewModelScope))
-    }
 }

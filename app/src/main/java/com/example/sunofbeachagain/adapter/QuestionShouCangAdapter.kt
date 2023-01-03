@@ -1,38 +1,32 @@
 package com.example.sunofbeachagain.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.sunofbeachagain.databinding.ItemQuestionListBinding
 import com.example.sunofbeachagain.domain.ItemQuestionData
 import com.example.sunofbeachagain.domain.bean.QuestionData
-import com.example.sunofbeachagain.room.QuestionDao
+import com.example.sunofbeachagain.room.QuestionEntity
 
-class QuestionListAdapter :
-    PagingDataAdapter<QuestionData, InnerHolder>(object : DiffUtil.ItemCallback<QuestionData>() {
-        override fun areItemsTheSame(oldItem: QuestionData, newItem: QuestionData): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: QuestionData, newItem: QuestionData): Boolean {
-            return oldItem == newItem
-        }
-
-    }) {
-
+class QuestionShouCangAdapter : RecyclerView.Adapter<InnerHolder>() {
     private lateinit var onQuestionListItemClickListener: OnQuestionListItemClickListener
+
+    private val questionShouCangList = mutableListOf<QuestionEntity>()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerHolder {
+        return InnerHolder(ItemQuestionListBinding.inflate(LayoutInflater.from(parent.context),
+            parent,
+            false))
+    }
 
     override fun onBindViewHolder(holder: InnerHolder, position: Int) {
         val itemQuestionListBinding = holder.dataBinding as ItemQuestionListBinding
+
         itemQuestionListBinding.apply {
-            getItem(position)?.let { questionData ->
-
-
+            questionShouCangList.reversed()[position].let { questionData ->
                 val itemQuestionData = ItemQuestionData(questionData.nickname,
                     questionData.createTime,
                     questionData.title,
@@ -50,20 +44,20 @@ class QuestionListAdapter :
 
 
                 root.setOnClickListener {
-                    if (this@QuestionListAdapter::onQuestionListItemClickListener.isInitialized) {
-                        onQuestionListItemClickListener.onQuestionListItemClick(questionData.id)
+                    if (this@QuestionShouCangAdapter::onQuestionListItemClickListener.isInitialized) {
+                        onQuestionListItemClickListener.onQuestionListItemClick(questionData.wendaId)
                     }
                 }
 
                 root.setOnLongClickListener {
-                    if (this@QuestionListAdapter::onQuestionListItemClickListener.isInitialized) {
+                    if (this@QuestionShouCangAdapter::onQuestionListItemClickListener.isInitialized) {
                         onQuestionListItemClickListener.onQuestionShouCangClick(questionData)
                     }
                     true
                 }
 
                 itemQuestionAvatar.setOnClickListener {
-                    if (this@QuestionListAdapter::onQuestionListItemClickListener.isInitialized) {
+                    if (this@QuestionShouCangAdapter::onQuestionListItemClickListener.isInitialized) {
                         onQuestionListItemClickListener.onQuestionListAvatarClick(questionData.userId)
                     }
                 }
@@ -72,11 +66,14 @@ class QuestionListAdapter :
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerHolder {
-        return InnerHolder(ItemQuestionListBinding.inflate(LayoutInflater.from(parent.context),
-            parent,
-            false))
+    override fun getItemCount() = questionShouCangList.size
+
+    fun setData(it: List<QuestionEntity>) {
+        questionShouCangList.clear()
+        questionShouCangList.addAll(it)
+        notifyDataSetChanged()
     }
+
 
     fun setOnQuestionListItemClickListener(onQuestionListItemClickListener: OnQuestionListItemClickListener) {
         this.onQuestionListItemClickListener = onQuestionListItemClickListener
@@ -85,8 +82,8 @@ class QuestionListAdapter :
     interface OnQuestionListItemClickListener {
         fun onQuestionListItemClick(wendaId: String)
 
-        fun onQuestionListAvatarClick(userId:String)
+        fun onQuestionListAvatarClick(userId: String)
 
-        fun onQuestionShouCangClick(questionData: QuestionData)
+        fun onQuestionShouCangClick(questionData: QuestionEntity)
     }
 }

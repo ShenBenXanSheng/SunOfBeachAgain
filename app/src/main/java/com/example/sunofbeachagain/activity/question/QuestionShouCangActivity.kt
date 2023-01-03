@@ -3,18 +3,15 @@ package com.example.sunofbeachagain.activity.question
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.lifecycleScope
 import com.example.sunofbeachagain.R
 import com.example.sunofbeachagain.activity.user.UserCenterActivity
-import com.example.sunofbeachagain.adapter.QuestionListAdapter
+import com.example.sunofbeachagain.adapter.QuestionShouCangAdapter
 import com.example.sunofbeachagain.base.BaseActivityViewModel
 import com.example.sunofbeachagain.databinding.ActivityQuestionShouCangBinding
-import com.example.sunofbeachagain.domain.bean.QuestionData
+import com.example.sunofbeachagain.room.QuestionEntity
 import com.example.sunofbeachagain.utils.Constant
 import com.example.sunofbeachagain.view.SobDialog
 import com.example.sunofbeachagain.viewmodel.QuestionShouCangViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 
 class QuestionShouCangActivity : BaseActivityViewModel<QuestionShouCangViewModel>() {
     private val questionShouCangBinding by lazy {
@@ -25,12 +22,13 @@ class QuestionShouCangActivity : BaseActivityViewModel<QuestionShouCangViewModel
         return questionShouCangBinding.root
     }
 
-    private val questionListAdapter by lazy {
-        QuestionListAdapter()
-    }
 
     private val sobDialog by lazy {
         SobDialog(this)
+    }
+
+    private val questionShouCangAdapter by lazy {
+        QuestionShouCangAdapter()
     }
 
     override fun initView() {
@@ -40,9 +38,9 @@ class QuestionShouCangActivity : BaseActivityViewModel<QuestionShouCangViewModel
 
         switchDispatchLoadViewState(ActivityLoadViewStatus.SUCCESS)
 
-        currentViewModel?.queryQuestionList(this@QuestionShouCangActivity)
+        currentViewModel?.queryQuestionList()
 
-        questionShouCangBinding.questionShoucangRv.adapter = questionListAdapter
+        questionShouCangBinding.questionShoucangRv.adapter = questionShouCangAdapter
     }
 
 
@@ -58,12 +56,13 @@ class QuestionShouCangActivity : BaseActivityViewModel<QuestionShouCangViewModel
                 when (it.itemId) {
 
                     R.id.menu_question_shoucang_clean -> {
-                        sobDialog.setMsgText("真的要清空所有收藏吗?","确定")
+                        sobDialog.setMsgText("真的要清空所有收藏吗?", "确定")
 
-                        sobDialog.setOnDialogCleanShouCangConfirmClick(object :SobDialog.OnDialogCleanShouCangConfirmClick{
+                        sobDialog.setOnDialogCleanShouCangConfirmClick(object :
+                            SobDialog.OnDialogCleanShouCangConfirmClick {
                             override fun onDialogCleanShouCangClick() {
                                 currentViewModel?.clearQuestion()
-                                currentViewModel?.queryQuestionList(this@QuestionShouCangActivity)
+
                             }
                         })
 
@@ -85,12 +84,7 @@ class QuestionShouCangActivity : BaseActivityViewModel<QuestionShouCangViewModel
                 override fun onQueryTextSubmit(query: String?): Boolean {
 
                     if (query != null) {
-                        if (query.isEmpty()){
-                            currentViewModel?.queryQuestionList(this@QuestionShouCangActivity)
-                        }else{
-                            currentViewModel?.querySingleQuestion(query,this@QuestionShouCangActivity)
-                        }
-
+                        currentViewModel?.querySearchQuestion(query)
                     }
 
                     return true
@@ -100,7 +94,9 @@ class QuestionShouCangActivity : BaseActivityViewModel<QuestionShouCangViewModel
 
 
                     if (newText.isNullOrEmpty()) {
-                        currentViewModel?.queryQuestionList(this@QuestionShouCangActivity)
+                        currentViewModel?.queryQuestionList()?.observe(this@QuestionShouCangActivity){
+                            questionShouCangAdapter.setData(it)
+                        }
                     }
 
                     return true
@@ -109,42 +105,36 @@ class QuestionShouCangActivity : BaseActivityViewModel<QuestionShouCangViewModel
             })
         }
 
-        loginViewModel.checkTokenResultLiveData.observe(this) {tokenBean->
-            questionListAdapter.setOnQuestionListItemClickListener(object :
-                QuestionListAdapter.OnQuestionListItemClickListener {
+        loginViewModel.checkTokenResultLiveData.observe(this) { tokenBean ->
+            questionShouCangAdapter.setOnQuestionListItemClickListener(object :QuestionShouCangAdapter.OnQuestionListItemClickListener{
                 override fun onQuestionListItemClick(wendaId: String) {
                     if (tokenBean != null) {
                         val intent = Intent(this@QuestionShouCangActivity, QuestionDetailActivity::class.java)
-
                         intent.putExtra(Constant.SOB_TOKEN, tokenBean.token)
                         intent.putExtra(Constant.SOB_QUESTION_ID, wendaId)
-
                         startActivity(intent)
-
                     }
                 }
 
                 override fun onQuestionListAvatarClick(userId: String) {
+                    val intent = Intent(this@QuestionShouCangActivity, UserCenterActivity::class.java)
 
-                        val intent = Intent(this@QuestionShouCangActivity, UserCenterActivity::class.java)
+                    if (tokenBean != null) {
+                        intent.putExtra(Constant.SOB_TOKEN, tokenBean.token)
+                    }
 
-                        if (tokenBean != null) {
-                            intent.putExtra(Constant.SOB_TOKEN, tokenBean.token)
-                        }
+                    intent.putExtra(Constant.SOB_USER_ID, userId)
 
-                        intent.putExtra(Constant.SOB_USER_ID, userId)
-
-                        registerForActivityResult.launch(intent)
-
+                    registerForActivityResult.launch(intent)
                 }
 
-                override fun onQuestionShouCangClick(questionData: QuestionData) {
+                override fun onQuestionShouCangClick(questionData: QuestionEntity) {
                     sobDialog.setMsgText("真的要删除收藏吗?","确定")
 
                     sobDialog.setOnDialogDeleteShouCangConfirmClick(object :SobDialog.OnDialogDeleteShouCangConfirmClick{
                         override fun onDialogDeleteShouCangClick() {
-                            currentViewModel?.deleteQuestion(questionData.id)
-                            currentViewModel?.queryQuestionList(this@QuestionShouCangActivity)
+                            currentViewModel?.deleteQuestion(questionData.wendaId)
+
                         }
 
                     })
@@ -152,7 +142,12 @@ class QuestionShouCangActivity : BaseActivityViewModel<QuestionShouCangViewModel
                     sobDialog.show()
                 }
 
-            })
+            }
+
+            )
+
+
+
         }
 
 
@@ -160,13 +155,22 @@ class QuestionShouCangActivity : BaseActivityViewModel<QuestionShouCangViewModel
 
     override fun initDataListener() {
         super.initDataListener()
-        currentViewModel?.queryQuestionLiveData?.observe(this) {
-            lifecycleScope.launchWhenCreated {
-                it.collectLatest {
-                    questionListAdapter.submitData(it)
-                }
+
+        currentViewModel?.apply {
+            queryQuestionList().observe(this@QuestionShouCangActivity){
+                Log.d(TAG,it.toString())
+                questionShouCangAdapter.setData(it)
             }
+
+            questionEntitySearchLiveData.observe(this@QuestionShouCangActivity){
+                questionShouCangAdapter.setData(it)
+            }
+
+
         }
+
+
+
     }
 
     override fun getCurrentViewModel() = QuestionShouCangViewModel::class.java

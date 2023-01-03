@@ -24,6 +24,7 @@ import com.example.sunofbeachagain.databinding.ActivityHomeBinding
 import com.example.sunofbeachagain.utils.NetWorkUtils
 import com.example.sunofbeachagain.viewmodel.MessageViewModel
 import java.util.*
+import java.util.logging.Handler
 
 class HomeActivity : BaseActivity() {
     private lateinit var onHomeDoubleClickListener: OnHomeDoubleClickListener
@@ -37,13 +38,6 @@ class HomeActivity : BaseActivity() {
         return homeBinding.root
     }
 
-    private val notHasNet = Timer()
-
-    private val hasNet = Timer()
-
-    var startHasNet = false
-
-    var startNotHasNet = true
 
     private val upSp = BaseApp.mContext?.getSharedPreferences("UpSp", MODE_PRIVATE)
 
@@ -62,31 +56,6 @@ class HomeActivity : BaseActivity() {
 
         setMyTAG(this::class.java.simpleName)
 
-        notHasNet.schedule(object : TimerTask() {
-            override fun run() {
-                if (!NetWorkUtils.isConnected(this@HomeActivity)) {
-                    if (startNotHasNet) {
-                        loginViewModel.checkToken("exit")
-                        startHasNet = true
-                        startNotHasNet = false
-                    }
-                }
-            }
-        }, 0, 1 * 1000)
-
-        hasNet.schedule(object : TimerTask() {
-            override fun run() {
-                if (NetWorkUtils.isConnected(this@HomeActivity)) {
-                    if (startHasNet) {
-                        loginViewModel.checkToken(firsttoken)
-                        startHasNet = false
-                        startNotHasNet = true
-                    }
-
-                }
-            }
-        }, 0, 1 * 1000)
-
 
         val readPermission = checkSelfPermission(permissionList[0])
 
@@ -102,6 +71,7 @@ class HomeActivity : BaseActivity() {
 
 
     }
+
 
     private fun deleteImageFile() {
         val externalFilesDirs = getExternalFilesDir(null)

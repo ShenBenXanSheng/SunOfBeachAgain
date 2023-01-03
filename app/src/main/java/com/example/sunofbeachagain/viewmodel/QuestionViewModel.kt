@@ -26,7 +26,6 @@ class QuestionViewModel : BaseViewModel() {
     fun getQuestionList(state: String) {
         questionListRepository.getQuestionState(state)
 
-        questionListRepository.getQuestionDataSources(0)
 
         questionListLiveData.postValue(Pager(PagingConfig(1),
             null) { questionListRepository }.flow.cachedIn(viewModelScope))
