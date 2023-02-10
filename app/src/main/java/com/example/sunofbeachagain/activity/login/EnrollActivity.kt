@@ -10,13 +10,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.sunofbeachagain.R
 import com.example.sunofbeachagain.databinding.ActivityEnrollBinding
-import com.example.sunofbeachagain.domain.body.PhoneCodeBody
 import com.example.sunofbeachagain.domain.body.EnrollSobBody
+import com.example.sunofbeachagain.domain.body.PhoneCodeBody
+import com.example.sunofbeachagain.utils.*
 import com.example.sunofbeachagain.viewmodel.EnrollViewModel
-import com.example.sunofbeachagain.utils.Constant
-import com.example.sunofbeachagain.utils.MD5Util
-import com.example.sunofbeachagain.utils.StringUtil
-import com.example.sunofbeachagain.utils.ToastUtil
 import java.util.*
 
 class EnrollActivity : AppCompatActivity() {
@@ -31,7 +28,7 @@ class EnrollActivity : AppCompatActivity() {
     private var passWord = ""
 
     private var nickname = ""
-    
+
     var getVerifyCodeCountdown = 60
 
     var timer: Timer? = null
@@ -60,14 +57,29 @@ class EnrollActivity : AppCompatActivity() {
     }
 
     private fun ActivityEnrollBinding.initView() {
-    }
+        MyAnimUtil.setAnim(
+            this@EnrollActivity,
+            enrollVerifyCodeContainer,
+            enrollPhoneContainer,
+            enrollPhoneCodeInputEt,
+            enrollPasswordInputEt,
+            enrollPasswordNicknameEt,
+            enrollEnrollBt,
+            enrollAgreementContainer
 
+        )
+    }
 
 
     private fun ActivityEnrollBinding.initListener() {
         enrollVerifyCodeIv.setOnClickListener {
             loadVerificationCodeImage()
         }
+
+        enrollToolbar.setNavigationOnClickListener {
+            finish()
+        }
+
 
         enrollGetPhoneCode.setOnClickListener {
 
@@ -79,7 +91,7 @@ class EnrollActivity : AppCompatActivity() {
                 if (!StringUtil.isPhone(phoneNumber)) {
                     ToastUtil.setText("这不是一个正确的手机号码")
                 } else {
-                    val phoneCodeBody = PhoneCodeBody(phoneNumber,verifyCodeText)
+                    val phoneCodeBody = PhoneCodeBody(phoneNumber, verifyCodeText)
 
                     enrollViewModel.getPhoneCode(phoneCodeBody)
 
@@ -97,10 +109,10 @@ class EnrollActivity : AppCompatActivity() {
 
             phoneVerifyCode = enrollPhoneCodeInputEt.text.toString().trim()
 
-             passWord = enrollPasswordInputEt.text.toString().trim()
+            passWord = enrollPasswordInputEt.text.toString().trim()
 
 
-             nickname = enrollPasswordNicknameEt.text.toString().trim()
+            nickname = enrollPasswordNicknameEt.text.toString().trim()
 
             if (phoneNumber.isEmpty() || phoneVerifyCode.isEmpty() || passWord.isEmpty() || nickname.isEmpty()) {
                 ToastUtil.setText("请输入信息")
@@ -115,7 +127,7 @@ class EnrollActivity : AppCompatActivity() {
                     Log.d("TAG", "用户名:${nickname}")
 
 
-                   enrollViewModel.checkPhoneCodeIsTrue(phoneNumber,phoneVerifyCode)
+                    enrollViewModel.checkPhoneCodeIsTrue(phoneNumber, phoneVerifyCode)
                 }
             }
 
@@ -136,22 +148,23 @@ class EnrollActivity : AppCompatActivity() {
                 ToastUtil.setText(it.message)
             }
 
-            checkPhoneCodeLiveData.observe(this@EnrollActivity){
-                Log.d("TAG",it.toString())
+            checkPhoneCodeLiveData.observe(this@EnrollActivity) {
+                Log.d("TAG", it.toString())
 
-                if (it.success){
-                    val enrollSobBody = EnrollSobBody(phoneNumber,MD5Util.getMD5String(passWord),nickname)
-                    enrollSob(phoneVerifyCode,enrollSobBody)
+                if (it.success) {
+                    val enrollSobBody =
+                        EnrollSobBody(phoneNumber, MD5Util.getMD5String(passWord), nickname)
+                    enrollSob(phoneVerifyCode, enrollSobBody)
                 }
             }
 
-            enrollSobLiveData.observe(this@EnrollActivity){
-                Log.d("TAG",it.toString())
+            enrollSobLiveData.observe(this@EnrollActivity) {
+                Log.d("TAG", it.toString())
 
-                if (it.success){
+                if (it.success) {
                     val intent = intent
-                    intent.putExtra(Constant.SOB_ENROLL_PHONE_NUMBER,phoneNumber)
-                    setResult(RESULT_OK,intent)
+                    intent.putExtra(Constant.SOB_ENROLL_PHONE_NUMBER, phoneNumber)
+                    setResult(RESULT_OK, intent)
                     finish()
                 }
             }

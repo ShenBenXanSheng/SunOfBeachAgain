@@ -1,7 +1,6 @@
 package com.example.sunofbeachagain.activity.login
 
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +14,7 @@ import com.example.sunofbeachagain.domain.body.ForgetPasswordBody
 import com.example.sunofbeachagain.domain.body.PhoneCodeBody
 import com.example.sunofbeachagain.utils.Constant
 import com.example.sunofbeachagain.utils.MD5Util
+import com.example.sunofbeachagain.utils.MyAnimUtil
 import com.example.sunofbeachagain.utils.ToastUtil
 import com.example.sunofbeachagain.viewmodel.ForgetViewModel
 
@@ -50,7 +50,10 @@ class ForgetPasswordActivity : AppCompatActivity() {
     }
 
     private fun ActivityForgetPasswordBinding.initView() {
-
+        MyAnimUtil.setAnim(this@ForgetPasswordActivity,
+            forgerPhoneNumberInputEt,
+            forgerVerifyContainer,
+            forgetSendMsgBt)
     }
 
     private fun ActivityForgetPasswordBinding.initListener() {
@@ -58,15 +61,19 @@ class ForgetPasswordActivity : AppCompatActivity() {
             loadVerificationCodeImage()
         }
 
+        forgerToolbar.setNavigationOnClickListener {
+            finish()
+        }
+
         forgetSendMsgBt.setOnClickListener {
             forgetPhoneNumber = forgerPhoneNumberInputEt.text.toString().trim()
 
             forgetVerifyCode = forgerVerifyCodeInputEt.text.toString().trim()
 
-            if (forgetPhoneNumber.isNullOrEmpty() && forgetVerifyCode.isNullOrEmpty()){
+            if (forgetPhoneNumber.isNullOrEmpty() && forgetVerifyCode.isNullOrEmpty()) {
                 ToastUtil.setText("请输入信息")
-            }else{
-                val phoneCodeBody = PhoneCodeBody(forgetPhoneNumber,forgetVerifyCode)
+            } else {
+                val phoneCodeBody = PhoneCodeBody(forgetPhoneNumber, forgetVerifyCode)
                 forgetViewModel.getPhoneCode(phoneCodeBody)
             }
         }
@@ -75,10 +82,10 @@ class ForgetPasswordActivity : AppCompatActivity() {
             forgetMsgCode = forgerPhoneCodeInputEt.text.toString().trim()
             forgetPassword = forgerPassWordInputEt.text.toString().trim()
 
-            if (forgetMsgCode.isNullOrEmpty() && forgetPassword.isNullOrEmpty()){
+            if (forgetMsgCode.isNullOrEmpty() && forgetPassword.isNullOrEmpty()) {
                 ToastUtil.setText("请输入信息")
-            }else{
-                forgetViewModel.checkPhoneCode(forgetPhoneNumber,forgetMsgCode)
+            } else {
+                forgetViewModel.checkPhoneCode(forgetPhoneNumber, forgetMsgCode)
             }
         }
     }
@@ -86,32 +93,32 @@ class ForgetPasswordActivity : AppCompatActivity() {
     private fun ActivityForgetPasswordBinding.initDataListener() {
 
         forgetViewModel.apply {
-            forgetPhoneNumberLiveData.observe(this@ForgetPasswordActivity){
-                Log.d("Forget",it.message)
-                if (it.success){
+            forgetPhoneNumberLiveData.observe(this@ForgetPasswordActivity) {
+                Log.d("Forget", it.message)
+                if (it.success) {
                     forgetSendMsgBt.visibility = View.GONE
                     forgetConfirmBt.visibility = View.VISIBLE
                     forgerPhoneCodeInputEt.visibility = View.VISIBLE
                     forgerPassWordInputEt.visibility = View.VISIBLE
 
                     ToastUtil.setText(it.message)
-                }else{
+                } else {
                     loadVerificationCodeImage()
                 }
             }
 
-            checkPhoneCode.observe(this@ForgetPasswordActivity){
-                if (it.success){
+            checkPhoneCode.observe(this@ForgetPasswordActivity) {
+                if (it.success) {
                     val forgetPasswordBody =
                         ForgetPasswordBody(forgetPhoneNumber, MD5Util.getMD5String(forgetPassword))
 
-                    forgetViewModel.forgetPassword(forgetMsgCode,forgetPasswordBody)
+                    forgetViewModel.forgetPassword(forgetMsgCode, forgetPasswordBody)
                 }
-                Log.d("Forget",it.message)
+                Log.d("Forget", it.message)
             }
 
-            forgetViewModel.forgetPasswordLiveData.observe(this@ForgetPasswordActivity){
-                if (it.success){
+            forgetViewModel.forgetPasswordLiveData.observe(this@ForgetPasswordActivity) {
+                if (it.success) {
                     finish()
                 }
                 ToastUtil.setText(it.message)

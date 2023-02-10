@@ -17,6 +17,7 @@ import com.example.sunofbeachagain.databinding.ActivitySetUserMsgBinding
 import com.example.sunofbeachagain.domain.bean.Result
 import com.example.sunofbeachagain.domain.body.ChangeUserInfoBody
 import com.example.sunofbeachagain.utils.Constant
+import com.example.sunofbeachagain.utils.MyAnimUtil
 import com.example.sunofbeachagain.utils.ToastUtil
 import com.example.sunofbeachagain.view.UserMsgPopWindow
 import com.example.sunofbeachagain.view.UserPriceCityPopWindow
@@ -59,6 +60,8 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
 
     private var avatarFile: File? = null
 
+    private var isZhiXiaShi = false
+
     override fun initView() {
         intent.getStringExtra(Constant.SOB_USER_ID)?.let {
             mUserId = it
@@ -76,6 +79,17 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
         avatarFile = getExternalFilesDir(null)
 
         deleteAvatarFile()
+        activitySetUserMsgBinding.apply {
+            MyAnimUtil.setAnim(this@SetUserMsgActivity,
+                userMsgAvatarAndNameContainer,
+                userMsgPlaceContainer,
+                userMsgCompanyContainer,
+                userMsgGoodAtContainer,
+                userMsgPositionContainer,
+                userMsgSignContainer,
+                userMsgChangeBt)
+        }
+
 
     }
 
@@ -192,7 +206,7 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
 
                     //======选择市=======
                     userMsgSelectShi.setOnClickListener {
-
+                        isZhiXiaShi = false
                         if (this@SetUserMsgActivity::popUserPriceCity.isInitialized) {
                             if (!popUserPriceCity.isShowing) {
                                 popUserPriceCity.isFocusable = true
@@ -211,8 +225,10 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
                     if (this@SetUserMsgActivity::popUserPriceCity.isInitialized) {
                         popUserPriceCity.setOnDismissListener {
                             setWindowAlpha(1f)
-                            userMsgSelectShiIv.setImageResource(R.mipmap.xiangxia)
+                            Log.d("TAG", "Dismiss")
+
                         }
+
 
                         popUserPriceCity.setOnPopUserPriceCityClickListener(object :
                             UserPriceCityPopWindow.OnPopUserPriceCityClickListener {
@@ -231,8 +247,8 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
 
                     //======选择区县=======
                     userMsgSelectQuxian.setOnClickListener {
-                        if (!userMsgSelectShi.isEnabled) {
-                            if (this@SetUserMsgActivity::popUserPriceCity.isInitialized) {
+                        if (this@SetUserMsgActivity::popUserPriceCity.isInitialized) {
+                            if (!userMsgSelectShi.isEnabled) {
                                 if (!popUserPriceCity.isShowing) {
                                     popUserPriceCity.isFocusable = true
                                     popUserPriceCity.isTouchable = true
@@ -243,9 +259,9 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
                                 } else {
                                     popUserPriceCity.dismiss()
                                 }
-                            }
-                        } else {
-                            if (this@SetUserMsgActivity::popUserPriceDistrict.isInitialized) {
+                                isZhiXiaShi = true
+                            } else {
+                                isZhiXiaShi = false
                                 if (!popUserPriceDistrict.isShowing) {
                                     popUserPriceDistrict.isFocusable = true
                                     popUserPriceDistrict.isTouchable = true
@@ -256,6 +272,7 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
                                 } else {
                                     popUserPriceDistrict.dismiss()
                                 }
+
                             }
                         }
                     }
@@ -263,7 +280,12 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
                     if (this@SetUserMsgActivity::popUserPriceCity.isInitialized) {
                         popUserPriceCity.setOnDismissListener {
                             setWindowAlpha(1f)
-                            userMsgSelectQuxianIv.setImageResource(R.mipmap.xiangxia)
+                            if (isZhiXiaShi) {
+                                userMsgSelectQuxianIv.setImageResource(R.mipmap.xiangxia)
+                            } else {
+                                userMsgSelectShiIv.setImageResource(R.mipmap.xiangxia)
+                            }
+
                         }
 
                         popUserPriceCity.setOnPopUserZhiXiaShiCLickListener(object :
@@ -367,7 +389,7 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
 
         val desFile = File("${avatarFile?.path}/${currentFile.name}")
 
-        currentFile.copyTo(desFile,false,1024)
+        currentFile.copyTo(desFile, false, 1024)
 
         val readPictureDegree = readPictureDegree(desFile.path)
 
@@ -399,7 +421,7 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
                     it.name,
                     requestBody)
 
-            currentViewModel?.postUserAvatar(firsttoken,multipartBody)
+            currentViewModel?.postUserAvatar(firsttoken, multipartBody)
         }
 
 
@@ -409,16 +431,16 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
         super.initDataListener()
         activitySetUserMsgBinding.apply {
             currentViewModel?.apply {
-                postUserAvatarLiveData.observe(this@SetUserMsgActivity){
+                postUserAvatarLiveData.observe(this@SetUserMsgActivity) {
                     if (it.success) {
                         deleteAvatarFile()
-                        changeUserAvatar(firsttoken,it.data)
+                        changeUserAvatar(firsttoken, it.data)
                     }
                 }
 
 
-                changeUserAvatarLiveData.observe(this@SetUserMsgActivity){
-                    if (it.success){
+                changeUserAvatarLiveData.observe(this@SetUserMsgActivity) {
+                    if (it.success) {
                         ToastUtil.setText("修改头像成功")
                     }
                 }
@@ -502,6 +524,7 @@ class SetUserMsgActivity : BaseActivityViewModel<SetUserMsgViewModel>() {
         img = Bitmap.createBitmap(img, 0, 0, width, height, matrix, true)
         return img
     }
+
     override fun getCurrentViewModel() = SetUserMsgViewModel::class.java
 
 

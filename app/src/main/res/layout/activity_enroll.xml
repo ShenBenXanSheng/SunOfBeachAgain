@@ -14,6 +14,7 @@
         tools:context=".activity.login.EnrollActivity">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/enroll_toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/white"
@@ -29,6 +30,7 @@
         </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
+            android:id="@+id/enroll_verify_code_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -54,6 +56,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/enroll_phone_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -128,6 +131,7 @@
             android:textSize="18sp" />
 
         <RelativeLayout
+            android:id="@+id/enroll_agreement_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

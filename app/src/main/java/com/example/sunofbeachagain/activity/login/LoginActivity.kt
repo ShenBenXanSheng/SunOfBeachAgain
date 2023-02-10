@@ -6,13 +6,11 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.text.substring
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -26,11 +24,11 @@ import com.example.sunofbeachagain.databinding.ActivityLoginBinding
 import com.example.sunofbeachagain.domain.body.UserBody
 import com.example.sunofbeachagain.utils.Constant
 import com.example.sunofbeachagain.utils.MD5Util.getMD5String
+import com.example.sunofbeachagain.utils.MyAnimUtil
 import com.example.sunofbeachagain.utils.NetWorkUtils.*
 import com.example.sunofbeachagain.utils.StringUtil
 import com.example.sunofbeachagain.utils.ToastUtil
 import com.example.sunofbeachagain.viewmodel.LoginViewModel
-import com.google.gson.Gson
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -63,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
     private var getTokenAgain = false
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(activityLoginBinding.root)
@@ -91,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
                 resources.getDrawable(R.mipmap.back, null)
         }
 
-        rememberAccountSp.getStringSet(Constant.SOB_REMEMBER_ACCOUNT,null)?.let {
+        rememberAccountSp.getStringSet(Constant.SOB_REMEMBER_ACCOUNT, null)?.let {
             val toMutableList = it.toMutableList()
 
             if (StringUtil.isPhone(toMutableList[0])) {
@@ -100,8 +99,7 @@ class LoginActivity : AppCompatActivity() {
 
             activityLoginBinding.loginPhoneNumberEd.setText(toMutableList[0])
 
-            activityLoginBinding.loginPasswordEd.setText( toMutableList[1])
-
+            activityLoginBinding.loginPasswordEd.setText(toMutableList[1])
 
 
             activityLoginBinding.rememberAccountCb.isChecked = true
@@ -136,6 +134,19 @@ class LoginActivity : AppCompatActivity() {
     private fun initView() {
 
         activityLoginBinding.apply {
+            MyAnimUtil.setAnim(this@LoginActivity,
+                loginWelcomeTv,
+                loginAvatarIv,
+                loginPhoneNumberEd,
+                loginPasswordEd,
+                loginVerifyCodeContainer,
+                loginRememberAccountContainer,
+                loginLoginBt,
+                loginRegisterAndForgerContainer,
+                loginUserAgreementContainer)
+
+
+
             loginVisitorLoginTv.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         }
 
@@ -207,8 +218,9 @@ class LoginActivity : AppCompatActivity() {
 
                                 rememberAccountList.add(loginPasswordEd.text.toString().trim())
 
-                                rememberAccountSp.edit().putStringSet(Constant.SOB_REMEMBER_ACCOUNT,rememberAccountList.toMutableSet()).apply()
-                            }else{
+                                rememberAccountSp.edit().putStringSet(Constant.SOB_REMEMBER_ACCOUNT,
+                                    rememberAccountList.toMutableSet()).apply()
+                            } else {
                                 rememberAccountSp.edit().clear().apply()
                             }
 

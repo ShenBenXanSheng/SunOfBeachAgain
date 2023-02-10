@@ -40,6 +40,7 @@
 
 
         <TextView
+            android:id="@+id/login_welcome_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -82,6 +83,7 @@
             android:singleLine="true" />
 
         <LinearLayout
+            android:id="@+id/login_verify_code_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -106,6 +108,7 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/login_remember_account_container"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
@@ -144,6 +147,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/login_register_and_forger_container"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginBottom="5dp">
@@ -172,6 +176,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/login_user_agreement_container"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
